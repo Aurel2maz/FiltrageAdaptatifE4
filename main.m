@@ -20,9 +20,9 @@ wopt = [1, 1/2, 1/4].';
 
 
 figure(2);
-% subplot(411), plot(e);
-% subplot(412), plot(w.');
-% subplot(413), plot(abs(w-wopt))
-% subplot(414), plot(abs(e).^2)
+subplot(411), plot(e);
+subplot(412), plot(w.');
+subplot(413), plot(abs(w-wopt).')
+subplot(414), plot(abs(w-wopt).^2.')
 %disp(w)
 soundsc(e, Fe);
