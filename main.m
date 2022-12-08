@@ -160,7 +160,7 @@ legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2", "|w_4-w_{opt}|^2",
 
 P = 3;
 delta = 0.01;
-lambda = 0.9;
+lambda = 1;
 wopt = [1 1/2 1/4].';
 [e,w] = algo_RLS(x, d, P, lambda, delta);
 
@@ -187,4 +187,15 @@ title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
 legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2");
 
 soundsc(e, Fe) % Ecoute signal de parole débruité
+
+%% Filtrage optimal au sens des moindres carrés
+
+P = 3;
+rxx = xcorr(x, P-1);
+rdx = xcorr(d,x,P-1);
+
+Rxx = toeplitz(rxx(P:-1:1), rxx(P:1:2*P-1));
+Rdx = toeplitz(rdx(P:-1:1), rdx(P:1:2*P-1));
+
+w_LS = inv(conj(Rxx)) * Rdx;
 

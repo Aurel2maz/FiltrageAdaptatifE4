@@ -10,9 +10,9 @@ K = eye(P)/delta;
 
 for n = 2:N
     X = [x(n-1);X(1:P-1)];
-    K = 1/lambda * (K - K*conj(X)*X.'*K/(lambda+X.'*K*conj(X)));
-    e = d(n)-X.'*w(:,n-1);
-    w(:,n) = w(:,n-1)+K*conj(X)*e;
+    K = 1/lambda * (K - (K*conj(X)*X.'*K)/(lambda+X.'*K*conj(X)));
+    e(n) = d(n)-X.'*w(:,n-1);
+    w(:,n) = w(:,n-1)+K*conj(X)*e(n);
 
 end
 
