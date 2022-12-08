@@ -129,7 +129,7 @@ mu = 10^-10;
 %% Algo LMS avec P = 5
 
 P = 5;
-wopt = [1 1/2 1/4 0 0];
+wopt = [1 1/2 1/4 0 0].';
 mu = 10^-10;
 [e, w] = algo_LMS(x, d, P, mu);
 
@@ -157,3 +157,34 @@ title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
 legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2", "|w_4-w_{opt}|^2", "|w_5-w_{opt}|^2");
 
 %% Algo RLS
+
+P = 3;
+delta = 0.01;
+lambda = 0.9;
+wopt = [1 1/2 1/4].';
+[e,w] = algo_RLS(x, d, P, lambda, delta);
+
+
+figure(2);
+subplot(411),
+plot(e);
+title("Signal d'erreur e_n");
+legend("e_n");
+
+subplot(412),
+plot(w.');
+title("Evolution des coefficients du filtre w_n au cours du temps");
+legend("w_1","w_2","w_3");
+
+subplot(413), 
+plot(abs(w-wopt).');
+title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
+legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
+
+subplot(414), 
+plot(abs(w-wopt).^2.')
+title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
+legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2");
+
+soundsc(e, Fe) % Ecoute signal de parole débruité
+

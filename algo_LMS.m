@@ -16,17 +16,4 @@ for n = 2:N+1
     w(:,n) = w(:,n-1) + mu*conj(X)*e(n-1);
 end
 
-
-% 
-% for n = P+1:N+1
-%     X= x(n-1:-1:n-P);
-% 
-% 
-%     y(n-1) = w(:,n-1).'*X;
-%     e(n-1) = d(n-1)-y(n-1);
-%     w(:,n) = w(:,n-1) + mu*conj(X)*e(n-1);
-% end
-
-
-
 end
