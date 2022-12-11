@@ -196,7 +196,17 @@ rxx = xcorr(x, P-1);
 rdx = xcorr(d,x,P-1);
 
 Rxx = toeplitz(rxx(P:-1:1), rxx(P:1:2*P-1));
-Rdx = toeplitz(rdx(P:-1:1), rdx(P:1:2*P-1));
+Rdx = rdx(P:1:2*P-1);
 
 w_LS = inv(conj(Rxx)) * Rdx;
+
+y_LS = filter(w_LS,1,x);
+
+e_LS = d - y_LS;
+
+soundsc(e_LS, Fe)
+
+
+
+
 
