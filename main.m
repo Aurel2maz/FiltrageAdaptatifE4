@@ -8,11 +8,12 @@ load("parole_bruitee.mat");
 load("decticelle.mat");
 
 Fe = 8192;
+T = [1:length(d)]/Fe;
 
 figure(1)
-subplot(211), plot(x);
+subplot(211), plot(T,x);
 title("Signal de bruit");
-subplot(212), plot(d);
+subplot(212), plot(T,d);
 title("Signal de parole bruité");
 
 
