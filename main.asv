@@ -218,33 +218,25 @@ for n=P:N
 end
 
 figure(5);
-subplot(211),
+subplot(411),
 plot(d);
 title("Signal d");
 legend("d");
 
-subplot(212),
+subplot(412),
 plot(dtest);
 title("Signal dtest");
 legend("dtest");
 
-%% ecoute du signal de paroles bruité avec la supression partiel du bruit de fond
+%%ecoute 
+soundsc(d, Fe)
+pause;
 soundsc(dtest, Fe)
 
-%% test du filtrage LMS sur dtest
 [etest, w] = algo_LMS(x, dtest, P, mu);
 
 soundsc(etest, Fe)
 
-%% test du filtrage LMS décroissant sur dtest
 [etestdec, w, mu] = algo_LMS_dec(x, dtest, P, mu_init);
 
 soundsc(etestdec, Fe)
-
-%% 
-
-
-
-
-
-%% 
