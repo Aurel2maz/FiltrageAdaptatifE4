@@ -206,7 +206,7 @@ e_LS = d - y_LS;
 
 soundsc(e_LS, Fe)
 
-%%
+%% Etude dans le cas d'un système non stationnaire
 
 N=length(x);
 P=3;
@@ -218,25 +218,44 @@ for n=P:N
 end
 
 figure(5);
-subplot(411),
+subplot(211),
 plot(d);
 title("Signal d");
 legend("d");
 
-subplot(412),
+subplot(212),
 plot(dtest);
 title("Signal dtest");
 legend("dtest");
 
-%%ecoute 
-soundsc(d, Fe)
-pause;
+%% ecoute du signal de paroles bruité avec la supression partiel du bruit de fond
 soundsc(dtest, Fe)
 
+%% test du filtrage LMS sur dtest
 [etest, w] = algo_LMS(x, dtest, P, mu);
+
+figure(6);
+subplot(411),
+plot(e);
+title("Signal d'erreur e_n en cas non stationnaire");
+legend("e_n");
+
+subplot(412),
+plot(w.');
+title("Evolution des coefficients du filtre w_n au cours du temps");
+legend("w_1","w_2","w_3");
 
 soundsc(etest, Fe)
 
+%% test du filtrage LMS décroissant sur dtest
 [etestdec, w, mu] = algo_LMS_dec(x, dtest, P, mu_init);
 
 soundsc(etestdec, Fe)
+
+%% 
+
+
+
+
+
+%% 

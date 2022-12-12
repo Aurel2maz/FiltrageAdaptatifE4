@@ -206,7 +206,7 @@ e_LS = d - y_LS;
 
 soundsc(e_LS, Fe)
 
-%%
+%% Etude dans le cas d'un système non stationnaire
 
 N=length(x);
 P=3;
@@ -232,14 +232,38 @@ legend("dtest");
 soundsc(dtest, Fe)
 
 %% test du filtrage LMS sur dtest
-[etest, w] = algo_LMS(x, dtest, P, mu);
+mu = 10^-10;
+[e, w] = algo_LMS(x, dtest, P, mu);
 
-soundsc(etest, Fe)
+figure(6);
+subplot(211),
+plot(e);
+title("Signal d'erreur e_n, cas non stationnaire");
+legend("e_n");
+
+subplot(212),
+plot(w.');
+title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
+legend("w_1","w_2","w_3");
+
+soundsc(e, Fe)
 
 %% test du filtrage LMS décroissant sur dtest
-[etestdec, w, mu] = algo_LMS_dec(x, dtest, P, mu_init);
+mu_init = 10^-9;
+[e, w, mu] = algo_LMS_dec(x, dtest, P, mu_init);
 
-soundsc(etestdec, Fe)
+figure(7);
+subplot(211),
+plot(e);
+title("Signal d'erreur e_n, cas non stationnaire");
+legend("e_n");
+
+subplot(212),
+plot(w.');
+title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
+legend("w_1","w_2","w_3");
+
+soundsc(e, Fe)
 
 %% 
 
@@ -247,4 +271,30 @@ soundsc(etestdec, Fe)
 
 
 
-%% 
+%% Filtrage optimal au sens des moindres carrés
+
+P = 3;
+rxx = xcorr(x, P-1);
+rdx = xcorr(dtest,x,P-1);
+
+Rxx = toeplitz(rxx(P:-1:1), rxx(P:1:2*P-1));
+Rdx = rdx(P:1:2*P-1);
+
+w_LS = inv(conj(Rxx)) * Rdx;
+
+y_LS = filter(w_LS,1,x);
+
+e_LS = d - y_LS;
+
+figure(9);
+subplot(211),
+plot(e_LS);
+title("Signal d'erreur e_n, cas non stationnaire");
+legend("e_n");
+
+subplot(212),
+plot(w_LS.');
+title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
+legend("w_1","w_2","w_3");
+
+soundsc(e_LS, Fe)
