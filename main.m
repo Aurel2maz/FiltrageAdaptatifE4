@@ -62,7 +62,7 @@ soundsc(e, Fe), pause; % Ecoute signal de parole débruité
 P = 3;
 wopt = [1, 1/2, 1/4].';
 
-alpha = 2;
+alpha = 0.1;
 mu = 2/(alpha*P*max(abs(x).^2));
 
 [e, w] = algo_LMS(x, d, P, mu);
@@ -77,12 +77,12 @@ legend("e_n");
 subplot(412),
 plot(w.');
 title("Evolution des coefficients du filtre w_n au cours du temps");
-legend("w_1","w_2","w_3");
+legend("w_0","w_1","w_2");
 
 subplot(413), 
 plot(abs(w-wopt).');
 title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
-legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
+legend("|w_0-w_{opt}|","|w_1-w_{opt}|","|w_2-w_{opt}|");
 
 subplot(414), 
 plot(sum((w-wopt).^2))
@@ -104,12 +104,12 @@ legend("e_n");
 subplot(512),
 plot(w.');
 title("Evolution des coefficients du filtre w_n au cours du temps");
-legend("w_1","w_2","w_3");
+legend("w_0","w_1","w_2");
 
 subplot(513), 
 plot(abs(w-wopt).');
 title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
-legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
+legend("|w_0-w_{opt}|","|w_1-w_{opt}|","|w_2-w_{opt}|");
 
 subplot(514), 
 plot(sum((w-wopt).^2))
@@ -145,12 +145,12 @@ legend("e_n");
 subplot(412),
 plot(w.');
 title("Evolution des coefficients du filtre w_n au cours du temps");
-legend("w_1","w_2","w_3", "w_4", "w_5");
+legend("w_0","w_1","w_2", "w_3", "w_4");
 
 subplot(413), 
 plot(abs(w-wopt).');
 title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
-legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|", "|w_4-w_{opt}|", "|w_5-w_{opt}|");
+legend("|w_0-w_{opt}|","|w_1-w_{opt}|","|w_2-w_{opt}|", "|w_3-w_{opt}|", "|w_4-w_{opt}|");
 
 subplot(414), 
 plot(sum((w-wopt).^2))
@@ -165,7 +165,6 @@ lambda = 1;
 wopt = [1 1/2 1/4].';
 [e,w] = algo_RLS(x, d, P, lambda, delta);
 
-
 figure(4);
 subplot(411),
 plot(e);
@@ -175,12 +174,12 @@ legend("e_n");
 subplot(412),
 plot(w.');
 title("Evolution des coefficients du filtre w_n au cours du temps");
-legend("w_1","w_2","w_3");
+legend("w_0","w_1","w_2");
 
 subplot(413), 
 plot(abs(w-wopt).');
 title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
-legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
+legend("|w_0-w_{opt}|","|w_1-w_{opt}|","|w_2-w_{opt}|");
 
 subplot(414), 
 plot(sum((w-wopt).^2))
@@ -244,7 +243,7 @@ legend("e_n");
 subplot(212),
 plot(w.');
 title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
-legend("w_1","w_2","w_3");
+legend("w_0","w_1","w_2");
 
 soundsc(e, Fe)
 
@@ -261,7 +260,7 @@ legend("e_n");
 subplot(212),
 plot(w.');
 title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
-legend("w_1","w_2","w_3");
+legend("w_0","w_1","w_2");
 
 soundsc(e, Fe)
 
@@ -290,6 +289,6 @@ legend("e_n");
 subplot(212),
 plot(w_LS.');
 title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
-legend("w_1","w_2","w_3");
+legend("w_0","w_1","w_2");
 
 soundsc(e_LS, Fe)

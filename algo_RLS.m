@@ -15,7 +15,7 @@ for n = 1:N
     K = 1/lambda * (K - (K*conj(X)*X.'*K)/(lambda+X.'*K*conj(X)));
     
     if n==1
-        xi(n) = 0;
+        xi(n) = d(n);
         w_LS(:,n) = 0;
     else
         xi(n) = d(n)-(X.'*w_LS(:,n-1));
