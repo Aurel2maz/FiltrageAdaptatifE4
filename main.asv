@@ -36,17 +36,17 @@ legend("e_n");
 subplot(412),
 plot(w.');
 title("Evolution des coefficients du filtre w_n au cours du temps");
-legend("w_1","w_2","w_3");
+legend("w_0","w_1","w_2");
 
 subplot(413), 
 plot(abs(w-wopt).');
 title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
-legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
+legend("|w_0-w_{opt}|","|w_1-w_{opt}|","|w_2-w_{opt}|");
 
 subplot(414), 
-plot(abs(w-wopt).^2.')
+plot(sum(abs(w-wopt).^2))
 title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
-legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2");
+legend("|ww_{opt}|^2");
 
 
 %% Ecoutes algo LMS
@@ -84,7 +84,7 @@ title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
 legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
 
 subplot(414), 
-plot(abs(w-wopt).^2.')
+plot(sum(abs(w-wopt).^2))
 title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
 legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2");
 
@@ -112,7 +112,7 @@ title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
 legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
 
 subplot(514), 
-plot(abs(w-wopt).^2.')
+plot(sum(abs(w-wopt).^2))
 title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
 legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2");
 
@@ -153,7 +153,7 @@ title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
 legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|", "|w_4-w_{opt}|", "|w_5-w_{opt}|");
 
 subplot(414), 
-plot(abs(w-wopt).^2.')
+plot(sum(abs(w-wopt).^2))
 title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
 legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2", "|w_4-w_{opt}|^2", "|w_5-w_{opt}|^2");
 
@@ -183,7 +183,7 @@ title("Evolution de l’erreur sur les coefficients du filtre |w_n-w_{opt}|");
 legend("|w_1-w_{opt}|","|w_2-w_{opt}|","|w_3-w_{opt}|");
 
 subplot(414), 
-plot(abs(w-wopt).^2.')
+plot(sum(abs(w-wopt).^2))
 title("Evolution de la norme 2 au carré de l’erreur sur le filtre")
 legend("|w_1-w_{opt}|^2","|w_2-w_{opt}|^2","|w_3-w_{opt}|^2");
 
@@ -232,30 +232,64 @@ legend("dtest");
 soundsc(dtest, Fe)
 
 %% test du filtrage LMS sur dtest
-[etest, w] = algo_LMS(x, dtest, P, mu);
+mu = 10^-10;
+[e, w] = algo_LMS(x, dtest, P, mu);
 
 figure(6);
-subplot(411),
+subplot(211),
 plot(e);
-title("Signal d'erreur e_n en cas non stationnaire");
+title("Signal d'erreur e_n, cas non stationnaire");
 legend("e_n");
 
-subplot(412),
+subplot(212),
 plot(w.');
-title("Evolution des coefficients du filtre w_n au cours du temps");
+title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
 legend("w_1","w_2","w_3");
 
-soundsc(etest, Fe)
+soundsc(e, Fe)
 
 %% test du filtrage LMS décroissant sur dtest
-[etestdec, w, mu] = algo_LMS_dec(x, dtest, P, mu_init);
+mu_init = 10^-9;
+[e, w, mu] = algo_LMS_dec(x, dtest, P, mu_init);
 
-soundsc(etestdec, Fe)
+figure(7);
+subplot(211),
+plot(e);
+title("Signal d'erreur e_n, cas non stationnaire");
+legend("e_n");
 
-%% 
+subplot(212),
+plot(w.');
+title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
+legend("w_1","w_2","w_3");
+
+soundsc(e, Fe)
 
 
+%% Filtrage optimal au sens des moindres carrés
 
+P = 3;
+rxx = xcorr(x, P-1);
+rdx = xcorr(dtest,x,P-1);
 
+Rxx = toeplitz(rxx(P:-1:1), rxx(P:1:2*P-1));
+Rdx = rdx(P:1:2*P-1);
 
-%% 
+w_LS = inv(conj(Rxx)) * Rdx;
+
+y_LS = filter(w_LS,1,x);
+
+e_LS = d - y_LS;
+
+figure(9);
+subplot(211),
+plot(e_LS);
+title("Signal d'erreur e_n, cas non stationnaire");
+legend("e_n");
+
+subplot(212),
+plot(w_LS.');
+title("Evolution des coefficients du filtre w_n au cours du temps, cas non stationnaire");
+legend("w_1","w_2","w_3");
+
+soundsc(e_LS, Fe)
