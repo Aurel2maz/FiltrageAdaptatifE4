@@ -1,13 +1,14 @@
-function [e,w_LS] = algo_RLS(x,d,P,lambda, delta)
+function [e,w] = algo_RLS(x,d,P,lambda, delta)
 
 N = length(x);
 w_LS = zeros(P,N+1);
 xi = zeros(N,1);
 e = zeros(N,1);
-% w = zeros(P,N+1);
+w = zeros(P,N+1);
 
 X = zeros(P,1);
 K = eye(P)/delta;
+
 
 for n = 1:N
 
@@ -22,7 +23,10 @@ for n = 1:N
         w_LS(:,n) = w_LS(:,n-1)+K*conj(X)*xi(n);
     end
     
+
     e(n) = d(n)-(X.'*w_LS(:,n));
+
+
 
 end
 
